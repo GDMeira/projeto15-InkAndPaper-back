@@ -9,3 +9,5 @@ export function schemaValidation(schema) {
         next()
     }
 }
+
+//criar outro arquivo e colocar o de validacao do token (authValidation)
