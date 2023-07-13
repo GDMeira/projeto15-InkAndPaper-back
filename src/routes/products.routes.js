@@ -1,8 +1,9 @@
 import { Router } from "express";
 import {schemaValidation} from "../middlewares/schemaValidation.js"
-import { getProduct, postProduct, getProducts, addToCart } from "../controllers/products.controllers.js";
+import { getProduct, postProduct, getProducts } from "../controllers/products.controllers.js";
 import { tokenValidation } from "../middlewares/tokenValidation.js";
 import { postProductSchema } from "../schemas/products.schemas.js";
+import { addToCart } from "../controllers/cart.controllers.js";
 
 
 const productRouter = Router()
