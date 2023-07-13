@@ -46,3 +46,17 @@ export async function signIn(req,res) {
     res.status(500).send(err.message);
   }
 }
+
+
+export async function logout(req, res) {
+  const token = res.locals.token
+  console.log("token aqui:", token)
+
+  try {
+    await db.collection(collections.sessions).deleteOne({ token });
+    res.status(204).send("Token removido!")
+
+  } catch(err) {
+    res.status(500).send(err.message)
+  }
+}
