@@ -1,9 +1,10 @@
 import { ObjectId } from "mongodb"
 import { collections, db } from "../db/db.js"
 
-export async function products(req,res) {
+export async function getProducts(req,res) {
     try {
-        
+        const data = await db.collection(collections.products).find().toArray()
+        return res.send(data);
     } catch (error) {
         return res.status(500).send({message: error.message})
     }

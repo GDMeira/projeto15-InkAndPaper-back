@@ -1,9 +1,5 @@
 import joi from "joi";
 
-  export const productsSchema = joi.object({
-
-  });
-
   export const postProductSchema = joi.object({
       title: joi.string().required(),
       description: joi.string().required(),
