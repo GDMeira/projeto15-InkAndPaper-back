@@ -22,3 +22,19 @@ export async function getProduct(req, res) {
         return res.status(500).send(error.message)
     }
 }
+
+export async function postProduct(req, res) {
+    const newProduct = {
+        ...req.body, 
+        price: Number(req.body.price), 
+        year: Number(req.body.year),
+        quantityInStock: Number(req.body.quantityInStock)
+    }
+
+    try {
+        await db.collection(collections.products).insertOne(newProduct)
+        res.send('Produto adicionado ao banco de dados.')
+    } catch (error) {
+        return res.status(500).send(error.message)
+    }
+}
