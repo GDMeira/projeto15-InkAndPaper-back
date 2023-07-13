@@ -4,7 +4,9 @@ import { MongoClient } from 'mongodb';
 
 dotenv.config();
 const mongoClient = new MongoClient(process.env.DATABASE_URL);
-export const collections = {test: 'test', users: "users", sessions: "sessions"} //collections names
+export const collections = { //collections names
+    test: 'test', users: "users", sessions: "sessions", products: "products"
+} 
 
 try {
     await mongoClient.connect();
