@@ -49,9 +49,12 @@ export async function addToCart(req, res) {
             })
         } else {
             const newProductCart = {
+                userId: res.locals.userId,
                 quantity: addQuantityToCart,
                 productId: new ObjectId(id),
-                userId: res.locals.userId
+                title: product.title,
+                image: product.image,
+                price: product.price
             }
 
             await db.collection(collections.cart).insertOne(newProductCart)
