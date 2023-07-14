@@ -6,6 +6,6 @@ import { addToCart } from "../controllers/cart.controllers.js";
 
 const cartRouter = Router()
 
-cartRouter.post("/post-shopping-cart/:id", tokenValidation, addToCart);
+cartRouter.post("/post-cart/:id", tokenValidation, addToCart);
 
 export default cartRouter
