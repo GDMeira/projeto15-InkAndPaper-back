@@ -11,14 +11,13 @@ async function findUserByEmail(email) {
 
 // controllers
 export async function signUp(req, res) {
-  let {email, name, image, password} = req.body
+  let {email, name, password} = req.body
   password = bcrypt.hashSync(password, 10)
 
   if (await findUserByEmail(email)) return res.status(409).send('Email já cadastrado!')
-  if (!image) image = ''
 
   try {
-    const newUser = {email, password, name, image}
+    const newUser = {email, password, name}
     await db.collection(collections.users).insertOne(newUser)
   } catch (error) {
     req.status(500).send(error.message)
@@ -40,7 +39,7 @@ export async function signIn(req,res) {
     const token = uuid()
     await db.collection(collections.sessions).insertOne({token, userId: user._id})
 
-    res.send({token, username: user.name, image: user.image})
+    res.send({token, username: user.name})
 
   } catch (err) {
     res.status(500).send(err.message);
