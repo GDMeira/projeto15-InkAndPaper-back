@@ -38,7 +38,7 @@ export async function signIn(req,res) {
     if(!isPasswordCorrect) return res.status(401).send("Senha incorreta!")
 
     const token = uuid()
-    await db.collection("sessions").insertOne({token, userId: user._id})
+    await db.collection(collections.sessions).insertOne({token, userId: user._id})
 
     res.send({token, username: user.name, image: user.image})
 
