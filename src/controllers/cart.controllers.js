@@ -9,6 +9,25 @@ async function findByUserAndProduct(userId, productId) {
     return order
 }
 
+export async function removeCartItem(req, res) {
+    const userId = res.locals.userId;
+    const { productId } = req.body;
+    try {
+      const result = await db.collection(collections.cart).deleteOne({
+        userId: new ObjectId(userId),
+        productId: new ObjectId(productId),
+      });
+  
+      if (result.deletedCount === 1) {
+        res.status(200).send("Produto removido do carrinho com sucesso.");
+      } else {
+        res.status(404).send("Produto não encontrado no carrinho.");
+      }
+    } catch (error) {
+      res.status(500).send(error.message);
+    }
+}
+
 async function removeBoughtProductFromStock(productId, quantity) { //acabei criando sem querer e já deixei ai hehe
     return await db.collection(collections.products).updateOne({ _id: productId }, {
         $inc: { quantityInStock: - quantity }
