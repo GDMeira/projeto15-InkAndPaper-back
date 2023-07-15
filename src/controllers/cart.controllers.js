@@ -80,35 +80,3 @@ export async function getCartItemsByUserId(req, res) {
         res.status(500).json({ e: 'Erro ao obter os itens do carrinho.' });
     }
 }
-
-// async function getCartItems(userId) {
-//     const cartItems = [];
-//     try {
-//       const cart = await db
-//         .collection(collections.cart)
-//         .find({ userId })
-//         .toArray();
-  
-//       for (const item of cart) {
-//         const { productId, quantity } = item;
-//         const product = await db
-//           .collection(collections.products)
-//           .findOne({ _id: new ObjectId(productId) });
-//         if (product) {
-//           const { price, image, title } = product;
-//           const total = (quantity*price);
-//           cartItems.push({
-//             quantity,
-//             title,
-//             image,
-//             price,
-//             total
-//           });
-//         }
-//       }
-//     } catch (error) {
-//       console.log(error);
-//     }
-//     return cartItems;
-//   }
-
