@@ -81,28 +81,31 @@ export async function getCartItemsByUserId(req, res) {
 async function getCartItems(userId) {
     const cartItems = [];
     try {
-        // pega os itens de acordo com o id
-        const cart =
-            await db.collection(collections.cart).find({ userId }).toArray();
-        // pra cada item no carrinho que esteja com o id, pega a quantidade e o id do produto
-        for (const item of cart) {
-            const { productId, quantity } = item;
-            // pega as informações do produto de acordo com os ids deles
-            const product = await db.collection(collections.products)
-                .findOne({ _id: new ObjectId(productId) });
-            if (product) {
-                const { price, image, title } = product;
-                cartItems.push({
-                    quantity,
-                    name: product.name,
-                    title,
-                    image
-                });
-            }
+      const cart = await db
+        .collection(collections.cart)
+        .find({ userId })
+        .toArray();
+  
+      for (const item of cart) {
+        const { productId, quantity } = item;
+        const product = await db
+          .collection(collections.products)
+          .findOne({ _id: new ObjectId(productId) });
+        if (product) {
+          const { price, image, title } = product;
+          const total = (quantity*price);
+          cartItems.push({
+            quantity,
+            title,
+            image,
+            price,
+            total
+          });
         }
+      }
     } catch (error) {
-        throw error;
+      console.log(error);
     }
     return cartItems;
-}
+  }
 
