@@ -29,10 +29,9 @@ async function getUserInfo(accessToken) {
   }
 }
 
-// TODO: criar variaveis para esses dados no .env
 const oAuth2Client = new OAuth2Client(
-  '980921926169-ttej4qr25qpj4ae677ekfgggn0pn88tf.apps.googleusercontent.com',
-  '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',
+  process.env.ID_CLIENT,
+  process.env.ID_SECRET,
   'postmessage',
 )
 
@@ -76,6 +75,7 @@ export async function signInByGoogle(req, res) {
   const { tokens } = await oAuth2Client.getToken(req.body.code)
   const userInfo = await getUserInfo(tokens.access_token)
   const user = await findUserByEmail(userInfo.email)
+  let userId = user?._id;
 
   if (!user) {
     try {
@@ -85,6 +85,7 @@ export async function signInByGoogle(req, res) {
         password: bcrypt.hashSync(tokens.access_token, 10)
       }
       const response = await db.collection(collections.users).insertOne(newUser)
+      userId = response.insertedId
     } catch (error) {
       return res.status(500).send(error.message)
     }
@@ -92,11 +93,11 @@ export async function signInByGoogle(req, res) {
 
   try {
     const token = uuid()
-    await db.collection(collections.sessions).insertOne({token, userId: response.insertedId})
+    await db.collection(collections.sessions).insertOne({token, userId})
 
     res.send({token, username: user.name})
   } catch (error) {
-    req.status(500).send(error.message)
+    res.status(500).send(error.message)
   }
 }
 
