@@ -28,12 +28,6 @@ export async function removeCartItem(req, res) {
     }
 }
 
-async function removeBoughtProductFromStock(productId, quantity) { //acabei criando sem querer e já deixei ai hehe
-    return await db.collection(collections.products).updateOne({ _id: productId }, {
-        $inc: { quantityInStock: - quantity }
-    })
-}
-
 // controllers
 
 export async function addToCart(req, res) {
@@ -96,6 +90,6 @@ export async function getCartItemsByUserId(req, res) {
             .toArray();
         res.json(cartItems);
     } catch (e) {
-        res.status(500).json({ e: 'Erro ao obter os itens do carrinho.' });
+        res.status(500).json('Erro ao obter os itens do carrinho.' );
     }
 }
