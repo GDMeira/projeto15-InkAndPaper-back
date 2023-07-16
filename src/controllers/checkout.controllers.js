@@ -11,24 +11,29 @@ export async function postCheckOut(req, res) {
             _id: new ObjectId(),
             paymentData: paymentData,
             purchaseDateTime: dayjs().format('DD/MM/YYYY - HH:mm:ss'),
-            cartItems: cartItems,
+            cartItems,
             address
         };
         const result = await db.collection(collections.checkout).insertOne(checkoutObject);
         await db.collection(collections.cart).deleteMany({ userId });
+        cartItems.forEach(product => {
+          db.collection(collections.products).updateOne({ _id: product.productId }, {
+            $inc: { quantityInStock: - product.quantity }
+          })
+        });
+
         if (result) {res.sendStatus(201);} else {res.sendStatus(400);}
     } catch (e) {
-        res.status(500).json({ e: 'Erro ao obter os itens do carrinho.' });
+        res.status(500).json('Erro ao obter os itens do carrinho.' );
     }
 }
-
 
 export async function getCheckoutItems(req, res) {
   try {
     const checkoutItems = await db.collection(collections.checkout).find().toArray();
     res.json(checkoutItems);
   } catch (error) {
-    res.status(500).json({ error: 'Erro ao obter os itens do checkout.' });
+    res.status(500).json('Erro ao obter os itens do checkout.');
   }
 }  
 
