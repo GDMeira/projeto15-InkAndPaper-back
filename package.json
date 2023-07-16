@@ -25,6 +25,7 @@
     "googleapis": "^122.0.0",
     "joi": "^17.9.2",
     "mongodb": "^5.7.0",
+    "react-credit-cards": "^0.8.3",
     "string-strip-html": "^13.4.1",
     "uuid": "^9.0.0"
   }
