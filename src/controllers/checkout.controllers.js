@@ -10,7 +10,7 @@ export async function postCheckOut(req, res) {
         const checkoutObject = {
             _id: new ObjectId(),
             paymentData: paymentData,
-            purchaseDateTime: dayjs().format(),
+            purchaseDateTime: dayjs().format('DD/MM/YYYY - HH:mm:ss'),
             cartItems: cartItems,
             address
         };
