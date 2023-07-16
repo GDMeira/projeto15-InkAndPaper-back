@@ -22,6 +22,7 @@ export async function postCheckOut(req, res) {
     }
 }
 
+
 export async function getCheckoutItems(req, res) {
   try {
     const checkoutItems = await db.collection(collections.checkout).find().toArray();
@@ -30,3 +31,4 @@ export async function getCheckoutItems(req, res) {
     res.status(500).json({ error: 'Erro ao obter os itens do checkout.' });
   }
 }  
+
