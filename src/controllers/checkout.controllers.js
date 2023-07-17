@@ -1,16 +1,27 @@
 import { ObjectId } from "mongodb";
 import dayjs from "dayjs";
 import { collections, db } from "../db/db.js";
+import utc from 'dayjs/plugin/utc.js';
+import timezone from 'dayjs/plugin/timezone.js';
+
+// Carrega os plugins de fuso horário e UTC no Day.js
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
 
 export async function postCheckOut(req, res) {
     const userId = res.locals.userId;
     const { paymentData, address, addressComp } = req.body;
     try {
         const cartItems = await db.collection(collections.cart).find({ userId }).toArray();
+        
+          // Obtém a data e hora atual com o fuso horário do servidor
+    const purchaseDateTime = dayjs().tz('America/Sao_Paulo').format('DD/MM/YYYY - HH:mm:ss');
+        
         const checkoutObject = {
             _id: new ObjectId(),
             paymentData: paymentData,
-            purchaseDateTime: dayjs().format('DD/MM/YYYY - HH:mm:ss'),
+            purchaseDateTime: purchaseDateTime,
             cartItems,
             address, 
             addressComp
