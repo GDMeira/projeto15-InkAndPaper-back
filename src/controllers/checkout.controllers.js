@@ -11,7 +11,7 @@ dayjs.extend(timezone);
 
 export async function postCheckOut(req, res) {
     const userId = res.locals.userId;
-    const { paymentData, address, addressComp } = req.body;
+    const { paymentData, addressData, addressComp } = req.body;
     try {
         const cartItems = await db.collection(collections.cart).find({ userId }).toArray();
         
@@ -24,7 +24,7 @@ export async function postCheckOut(req, res) {
             paymentData: paymentData,
             purchaseDateTime: purchaseDateTime,
             cartItems,
-            address, 
+            addressData, 
             addressComp
         };
         const result = await db.collection(collections.checkout).insertOne(checkoutObject);
