@@ -11,7 +11,7 @@ dayjs.extend(timezone);
 
 export async function postCheckOut(req, res) {
     const userId = res.locals.userId;
-    const { paymentData, addressData, addressComp } = req.body;
+    const { paymentData, address, addressComp } = req.body;
     try {
         const cartItems = await db.collection(collections.cart).find({ userId }).toArray();
         
@@ -19,11 +19,12 @@ export async function postCheckOut(req, res) {
     const purchaseDateTime = dayjs().tz('America/Sao_Paulo').format('DD/MM/YYYY - HH:mm:ss');
         
         const checkoutObject = {
+            userId: userId,
             _id: new ObjectId(),
             paymentData: paymentData,
             purchaseDateTime: purchaseDateTime,
             cartItems,
-            addressData, 
+            address, 
             addressComp
         };
         const result = await db.collection(collections.checkout).insertOne(checkoutObject);
@@ -50,8 +51,10 @@ export async function getCheckoutLastItems(req, res) {
   }
 }
 export async function getCheckoutItems(req, res) {
+  const userId = res.locals.userId;
+  console.log(userId)
   try {
-    const checkoutItems = await db.collection(collections.checkout).find().toArray();
+    const checkoutItems = await db.collection(collections.checkout).find({userId}).toArray();
     res.json(checkoutItems);
   } catch (error) {
     res.status(500).json('Erro ao obter os itens do checkout.');
